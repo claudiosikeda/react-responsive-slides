@@ -1,0 +1,36 @@
+{
+  "name": "react-responsive-slides",
+  "version": "0.0.1",
+  "description": "Simple Responsive Slides",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "slides"
+  ],
+  "author": "Claudio Ikeda",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "babel-plugin-styled-components": "^1.11.1",
+    "prop-types": "^15.7.2",
+    "rollup": "^2.28.2",
+    "rollup-plugin-peer-deps-external": "^2.2.3"
+  },
+  "dependencies": {
+    "styled-components": "^5.2.0"
+  }
+}
