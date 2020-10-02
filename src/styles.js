@@ -8,6 +8,11 @@ export const ViewerContainer = styled.div`
   left: 0;
 `
 
+export const ViewerContent = styled.div`
+  opacity: ${(props) => (props.rendered ? '1' : '0')};
+  transition: all .6s ease-in-out;
+`
+
 export const Mask = styled.div`
   position: fixed;
   background-color: rgba(0, 0, 0, .5);
@@ -53,4 +58,36 @@ export const SlideContent = styled.div`
 
 export const SlideText = styled.div`
   padding: 20px 0;
+  max-width: ${(props) => {
+    if (props.textWidth > 800) return `${props.textWidth}px`
+    if (props.textWidth === 0) return 'initial'
+    return '800px'
+  }};
+  animation: fade .4s forwards;
+
+  @keys fade {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+`
+
+export const SlideImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  animation: fade .8s forwards;
+
+  @keys fade {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
 `
