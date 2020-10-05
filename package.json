@@ -11,6 +11,7 @@
     "react",
     "slides"
   ],
+  "repository": "claudiosikeda/react-responsive-slide",
   "author": "Claudio Ikeda",
   "license": "ISC",
   "peerDependencies": {
