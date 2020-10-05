@@ -14,7 +14,8 @@ function Slide (props) {
     index,
     onRendered,
     header: Header,
-    footer: Footer
+    footer: Footer,
+    onImageClick
   } = props
   
   const contentRef = useRef()
@@ -64,6 +65,7 @@ function Slide (props) {
       style={{ maxWidth: '100%', maxHeight: '100%' }}
       onLoad={loadedImage}
       loaded={imageLoaded}
+      onClick={() => onImageClick(slide.image)}
     />
   )
 

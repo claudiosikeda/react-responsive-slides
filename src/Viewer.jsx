@@ -15,7 +15,8 @@ function Viewer (props) {
     loader: Loader,
     header,
     footer,
-    currentSlide
+    currentSlide,
+    onImageClick
   } = props
 
   const [rendered, setRendered] = useState(false)
@@ -55,6 +56,7 @@ function Viewer (props) {
       onRendered={onRendered}
       header={header}
       footer={footer}
+      onImageClick={onImageClick}
     />
   )
 
