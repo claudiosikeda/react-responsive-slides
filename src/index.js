@@ -1,1 +1,1 @@
-export { default as Viewer } from './Viewer.jsx'
+export { default as Slides } from './Viewer.jsx'
