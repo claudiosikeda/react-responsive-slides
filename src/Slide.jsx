@@ -10,11 +10,11 @@ import {
 function Slide (props) {
   const {
     slide,
-    onPrevious,
-    onNext,
     current,
     index,
     onRendered,
+    header: Header,
+    footer: Footer
   } = props
   
   const contentRef = useRef()
@@ -95,24 +95,14 @@ function Slide (props) {
   return (
     <SlideMain current={current}>
       <SlideContainer ref={containerRef} current={current}>
-        <div>
-          <h3>Meus slides</h3>
-        </div>
-
+        <Header />
         <SlideContent ref={contentRef} current={current} height={height}>
           {renderMedia()}
         </SlideContent>
         
         {slide.text ? renderText() : null}
         
-        <div style={{
-            display: 'grid',
-            gridTemplateColumns: '50% 50%',
-            padding: '20px 0'
-          }}>
-          <button type="button" onClick={onPrevious}>Voltar</button>
-          <button type="button" onClick={onNext}>Avançar</button>
-        </div>
+        <Footer />
       </SlideContainer>
     </SlideMain>
   )

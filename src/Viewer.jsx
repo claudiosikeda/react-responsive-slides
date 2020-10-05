@@ -12,20 +12,14 @@ import {
 function Viewer (props) {
   const {
     slides,
-    loader: Loader
+    loader: Loader,
+    header,
+    footer,
+    currentSlide
   } = props
 
-  const [currentSlide, setCurrentSlide] = useState(0)
   const [rendered, setRendered] = useState(false)
   const [showLoader, setShowLoader] = useState(true)
- 
-  const onPrevious = () => {
-    setCurrentSlide(currentSlide - 1)
-  }
-
-  const onNext = () => {
-    setCurrentSlide(currentSlide + 1)
-  }
 
   const onRendered = (index) => {
     if (index === 0) {
@@ -58,9 +52,9 @@ function Viewer (props) {
       index={index}
       slide={slide}
       current={index === currentSlide}
-      onPrevious={onPrevious}
-      onNext={onNext}
       onRendered={onRendered}
+      header={header}
+      footer={footer}
     />
   )
 
