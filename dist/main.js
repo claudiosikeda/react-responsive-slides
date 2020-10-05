@@ -1434,5 +1434,5 @@ function Viewer(props) {
   })));
 }
 
-exports.Viewer = Viewer;
+exports.Slides = Viewer;
 //# sourceMappingURL=main.js.map
