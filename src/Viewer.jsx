@@ -1,113 +1,74 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useLayoutEffect,
-  useReducer,
-} from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import Slide from './Slide.jsx'
-import * as Styled from './styles/StyledViewer'
-import { ThemeProvider } from 'styled-components'
+import Spinner from './Spinner.jsx'
+import {
+  Mask,
+  ViewerContainer,
+  ViewerContent,
+  LoaderContainer,
+  LoaderContent
+} from './styles.js'
 
-function Viewer({ slides: originalSlides, header, footer, currentSlideIndex }) {
-  const modalRef = useRef()
-  const slidesRef = useRef()
-  const [slideDimensions, setSlideDimentions] = useState({ width: 300, height: 300 })
+function Viewer (props) {
+  const {
+    slides,
+    loader: Loader,
+    header,
+    footer,
+    currentSlide,
+    onImageClick
+  } = props
+
   const [rendered, setRendered] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [showAll, setShowAll] = useState(false)
-  const [slides, setSlides] = useState([])
+  const [showLoader, setShowLoader] = useState(true)
 
-  useEffect(() => {
-    const withIndex = originalSlides.map((item, index) => {
-      return {
-        ...item,
-        index
-      }
-    })
-    setSlides(withIndex) 
-  }, [originalSlides])
-
-  useEffect(() => {
-    if (currentSlideIndex >= slides.length) {
-      return setCurrentSlide(slides.length - 1)
-    }
-
-    if (currentSlideIndex < 0) {
-      return setCurrentSlide(0)
-    }
-
-    return setCurrentSlide(currentSlideIndex)
-  }, [currentSlideIndex, slides])
-
-  useLayoutEffect(() => {
-    if (currentSlide >= 0 && rendered) {
-      const nextSlide = slidesRef.current.children[currentSlideIndex]
-      if (!nextSlide) return
-      
-      modalRef.current.classList.remove('modal')
+  const onRendered = (index) => {
+    if (index === 0) {
+      setRendered(true)
       setTimeout(() => {
-        modalRef.current.classList.add('modal')
-      }, 1)
-
-      setSlideDimentions({
-        width: nextSlide.offsetWidth,
-        height: nextSlide.offsetHeight
-      })
+        setShowLoader(false)
+      }, 800)
     }
-  }, [currentSlide, rendered])
-
-  const onRendered = () => {
-    setRendered(true)
-    setShowAll(true)
   }
 
-  const renderSlide = (slide) => (
-    <Styled.Slide key={slide.index} visible={slide.index === currentSlide}>
-      <Slide
-        slide={slide}
-        onRendered={onRendered}
-        header={header}
-        footer={footer}
-        current={currentSlide === slide.index}
-      />
-    </Styled.Slide>
+  const renderSpinner = () => {
+    if (Loader) {
+      return (<Loader />)
+    }
+
+    return (<Spinner />)
+  }
+  
+  const renderLoader = () => (
+    <LoaderContainer>
+      <LoaderContent show={!rendered}>
+        {renderSpinner()}
+      </LoaderContent>
+    </LoaderContainer>
   )
 
-  const getSlides = () => {
-    if (!slides.length) return []
-    if (showAll) return slides
-    return [slides[0]]
-  }
+  const renderItem = (slide, index) => (
+    <Slide
+      key={index}
+      index={index}
+      slide={slide}
+      current={index === currentSlide}
+      onRendered={onRendered}
+      header={header}
+      footer={footer}
+      onImageClick={onImageClick}
+    />
+  )
 
   return (
-    <ThemeProvider theme={{}}>
-      <Styled.Mask />
-      <Styled.Viewer>
-        <Styled.MaskModal
-          modalWidth={slideDimensions.width}
-          modalHeight={slideDimensions.height}
-        >
-          {rendered ? null : 'Loading...'}
-        </Styled.MaskModal>
-        <Styled.Modal
-          ref={modalRef}
-          showModal={rendered}
-          className="modal"
-        >
-          <Styled.Slides ref={slidesRef}>
-            {getSlides().map(renderSlide)}
-          </Styled.Slides>
-
-        </Styled.Modal>
-      </Styled.Viewer>
-    </ThemeProvider>
+    <ViewerContainer>
+      <Mask />
+      {showLoader ? renderLoader() : null}
+      <ViewerContent rendered={rendered}>
+        {slides.map((item, index) => renderItem(item, index))}
+      </ViewerContent>
+    </ViewerContainer>
   )
-}
-
-Viewer.propTypes = {
-  slides: PropTypes.arrayOf(PropTypes.object)
 }
 
 export default Viewer
