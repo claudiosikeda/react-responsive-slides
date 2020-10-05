@@ -10,7 +10,7 @@ export const ViewerContainer = styled.div`
 
 export const ViewerContent = styled.div`
   opacity: ${(props) => (props.rendered ? '1' : '0')};
-  transition: all .6s ease-in-out;
+  transition: all .3s ease-in-out;
 `
 
 export const Mask = styled.div`
@@ -35,9 +35,10 @@ export const SlideMain = styled.div`
 
 export const SlideContainer = styled.div`
   background-color: #fff;
+  border-radius: 5px;
   max-width: 80%;
   max-height: 80%;
-  min-width: 300px;
+  min-width: 280px;
   min-height: 200px;
   padding: 20px 30px;
   z-index: 100;
@@ -90,4 +91,28 @@ export const SlideImage = styled.img`
       opacity: 0;
     }
   }
+`
+
+export const LoaderContainer = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`
+
+export const LoaderContent = styled.div`
+  background-color: #fff;
+  border-radius: 5px;
+  max-width: 80%;
+  max-height: 80%;
+  min-width: 280px;
+  min-height: 200px;
+  padding: 20px 30px;
+  z-index: 100;
+  position: relative;
+  transform: ${(props) => (props.show ? 'scale(1)' : 'scale(1.8)')};
+  opacity: ${(props) => (props.show ? '1' : '0')};
+  transition: all .1s ease-in-out;
 `
