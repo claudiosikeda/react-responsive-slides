@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-import Slide from './Slide.jsx'
-import Spinner from './Spinner.jsx'
+import PropTypes from 'prop-types'
+import Slide from './Slide'
+import Spinner from './Spinner'
 import {
   Mask,
   ViewerContainer,
   ViewerContent,
   LoaderContainer,
-  LoaderContent
-} from './styles.js'
+  LoaderContent,
+} from './styles'
 
-function Viewer (props) {
+function Viewer(props) {
   const {
     slides,
     loader: Loader,
     header,
     footer,
     currentSlide,
-    onImageClick
+    onImageClick,
   } = props
 
   const [rendered, setRendered] = useState(false)
@@ -38,7 +39,7 @@ function Viewer (props) {
 
     return (<Spinner />)
   }
-  
+
   const renderLoader = () => (
     <LoaderContainer>
       <LoaderContent show={!rendered}>
@@ -69,6 +70,22 @@ function Viewer (props) {
       </ViewerContent>
     </ViewerContainer>
   )
+}
+
+Viewer.propTypes = {
+  slides: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loader: PropTypes.func,
+  header: PropTypes.func,
+  footer: PropTypes.func,
+  currentSlide: PropTypes.number.isRequired,
+  onImageClick: PropTypes.func,
+}
+
+Viewer.defaultProps = {
+  loader: null,
+  header: () => null,
+  footer: () => null,
+  onImageClick: () => null,
 }
 
 export default Viewer
