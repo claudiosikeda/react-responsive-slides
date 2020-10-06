@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import {
   SlideMain,
   SlideContainer,
   SlideContent,
   SlideText,
-  SlideImage
-} from './styles.js'
+  SlideImage,
+} from './styles'
 
-function Slide (props) {
+function Slide(props) {
   const {
     slide,
     current,
@@ -15,9 +16,9 @@ function Slide (props) {
     onRendered,
     header: Header,
     footer: Footer,
-    onImageClick
+    onImageClick,
   } = props
-  
+
   const contentRef = useRef()
   const containerRef = useRef()
   const mediaRef = useRef()
@@ -34,28 +35,29 @@ function Slide (props) {
     if (slide.image) {
       return setTextWidth(800)
     }
-    
+
     setTextWidth(800)
     return onRendered(index)
-  }, [slide, contentRef, onRendered, imageLoaded])
-  
+  }, [slide, contentRef, onRendered, imageLoaded, index])
+
   const loadedImage = () => {
     setImageLoaded(true)
     if (window.innerWidth < 500) {
       return setHeight('auto')
     }
 
-    const scrollHeight = containerRef.current.scrollHeight
-    const offsetHeight = containerRef.current.offsetHeight
+    const { scrollHeight, offsetHeight } = containerRef.current
 
     if (scrollHeight !== offsetHeight) {
       const overflow = scrollHeight - offsetHeight + 5
       const contentHeight = contentRef.current.offsetHeight
-      let height = contentHeight - overflow
-      height = height < 300 ? 'auto' : height
-      
-      setHeight(`${height}px`)
+      let newHeight = contentHeight - overflow
+      newHeight = newHeight < 300 ? 'auto' : newHeight
+
+      return setHeight(`${newHeight}px`)
     }
+
+    return null
   }
 
   const renderImage = () => (
@@ -71,6 +73,7 @@ function Slide (props) {
 
   const renderVideo = () => (
     <iframe
+      title={slide.video}
       ref={mediaRef}
       width="560px"
       height="315px"
@@ -78,8 +81,7 @@ function Slide (props) {
       frameBorder="0"
       allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-    >
-    </iframe>
+    />
   )
 
   const renderText = () => (
@@ -93,7 +95,7 @@ function Slide (props) {
     if (slide.video) return renderVideo()
     return null
   }
-  
+
   return (
     <SlideMain current={current}>
       <SlideContainer ref={containerRef} current={current}>
@@ -101,13 +103,30 @@ function Slide (props) {
         <SlideContent ref={contentRef} current={current} height={height}>
           {renderMedia()}
         </SlideContent>
-        
+
         {slide.text ? renderText() : null}
-        
+
         <Footer />
       </SlideContainer>
     </SlideMain>
   )
+}
+
+Slide.propTypes = {
+  slide: PropTypes.objectOf(PropTypes.any).isRequired,
+  current: PropTypes.bool,
+  index: PropTypes.number.isRequired,
+  onRendered: PropTypes.func.isRequired,
+  header: PropTypes.func,
+  footer: PropTypes.func,
+  onImageClick: PropTypes.func,
+}
+
+Slide.defaultProps = {
+  current: 0,
+  header: () => null,
+  footer: () => null,
+  onImageClick: () => null,
 }
 
 export default Slide

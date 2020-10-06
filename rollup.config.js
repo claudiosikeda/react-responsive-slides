@@ -8,21 +8,22 @@ export default {
   output: {
     file: 'dist/main.js',
     format: 'cjs',
-    sourcemap: true
+    sourcemap: true,
   },
   external: ['react', 'react-dom'],
   plugins: [
     external(),
     babel({
       exclude: 'node_modules/**',
-      babelHelpers: 'bundled'
+      babelHelpers: 'bundled',
     }),
     resolve({
       browser: true,
       customResolveOptions: {
-        moduleDirectory: 'node_modules'
-      }
+        moduleDirectory: 'node_modules',
+      },
+      extensions: ['.js', '.jsx'],
     }),
-    commonjs()
+    commonjs(),
   ],
 };
