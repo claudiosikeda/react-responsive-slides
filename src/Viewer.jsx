@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { CacheProvider } from '@emotion/core'
+import createCache from '@emotion/cache'
 import Slide from './Slide'
 import Spinner from './Spinner'
 import {
@@ -22,6 +24,15 @@ function Viewer(props) {
 
   const [rendered, setRendered] = useState(false)
   const [showLoader, setShowLoader] = useState(true)
+  const [cache, setCache] = useState(null)
+  const containerRef = useRef()
+
+  useEffect(() => {
+    setCache(createCache({
+      key: 'slide',
+      container: containerRef.current,
+    }))
+  }, [])
 
   const onRendered = (index) => {
     if (index === 0) {
@@ -61,14 +72,30 @@ function Viewer(props) {
     />
   )
 
-  return (
-    <ViewerContainer>
+  const renderContent = () => (
+    <CacheProvider value={cache}>
       <Mask />
       {showLoader ? renderLoader() : null}
       <ViewerContent rendered={rendered}>
         {slides.map((item, index) => renderItem(item, index))}
       </ViewerContent>
-    </ViewerContainer>
+    </CacheProvider>
+  )
+
+  return (
+    <div style={{
+      position: 'fixed',
+      height: '100%',
+      width: '100%',
+      top: '0',
+      left: '0',
+    }}
+    >
+      <div ref={containerRef} />
+      <ViewerContainer>
+        {cache ? renderContent() : null}
+      </ViewerContainer>
+    </div>
   )
 }
 
