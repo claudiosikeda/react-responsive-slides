@@ -3169,6 +3169,7 @@ function Slide(props) {
       },
       onLoad: loadedImage,
       loaded: imageLoaded,
+      alt: slide.imageAlt || slide.image,
       onClick: function onClick() {
         return onImageClick(slide.image);
       }
