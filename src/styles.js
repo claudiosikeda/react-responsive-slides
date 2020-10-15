@@ -64,15 +64,15 @@ export const SlideText = styled.div`
     if (props.textWidth === 0) return 'initial'
     return '800px'
   }};
-  animation: fade .4s forwards;
+  animation: fadeText .4s forwards;
 
-  @keys fade {
-    0% {
-      opacity: 1;
+  @keyframes fadeText {
+    from {
+      opacity: 0;
     }
 
-    100% {
-      opacity: 0;
+    to {
+      opacity: 1;
     }
   }
 `
@@ -80,15 +80,15 @@ export const SlideText = styled.div`
 export const SlideImage = styled.img`
   max-width: 100%;
   max-height: 100%;
-  animation: fade .8s forwards;
+  animation: fadeImage .8s forwards;
 
-  @keys fade {
-    0% {
-      opacity: 1;
+  @keyframes fadeImage {
+    from {
+      opacity: 0;
     }
 
-    100% {
-      opacity: 0;
+    to {
+      opacity: 1;
     }
   }
 `
