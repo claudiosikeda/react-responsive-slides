@@ -67,6 +67,7 @@ function Slide(props) {
       style={{ maxWidth: '100%', maxHeight: '100%' }}
       onLoad={loadedImage}
       loaded={imageLoaded}
+      alt={slide.imageAlt || slide.image}
       onClick={() => onImageClick(slide.image)}
     />
   )
