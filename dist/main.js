@@ -2989,7 +2989,7 @@ function _templateObject9() {
 }
 
 function _templateObject8() {
-  var data = _taggedTemplateLiteral(["\n  max-width: 100%;\n  max-height: 100%;\n  animation: fade .8s forwards;\n\n  @keys fade {\n    0% {\n      opacity: 1;\n    }\n\n    100% {\n      opacity: 0;\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  max-width: 100%;\n  max-height: 100%;\n  animation: fadeImage .8s forwards;\n\n  @keyframes fadeImage {\n    from {\n      opacity: 0;\n    }\n\n    to {\n      opacity: 1;\n    }\n  }\n"]);
 
   _templateObject8 = function _templateObject8() {
     return data;
@@ -2999,7 +2999,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n  padding: 20px 0;\n  max-width: ", ";\n  animation: fade .4s forwards;\n\n  @keys fade {\n    0% {\n      opacity: 1;\n    }\n\n    100% {\n      opacity: 0;\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding: 20px 0;\n  max-width: ", ";\n  animation: fadeText .4s forwards;\n\n  @keyframes fadeText {\n    from {\n      opacity: 0;\n    }\n\n    to {\n      opacity: 1;\n    }\n  }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
