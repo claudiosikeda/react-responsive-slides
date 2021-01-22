@@ -19,12 +19,34 @@ function Slide(props) {
     onImageClick,
   } = props
 
+  const mainRef = useRef()
   const contentRef = useRef()
   const containerRef = useRef()
   const mediaRef = useRef()
   const [height, setHeight] = useState('initial')
   const [imageLoaded, setImageLoaded] = useState(false)
   const [textWidth, setTextWidth] = useState(0)
+  const [rendered, setRendered] = useState(false)
+  const [classScroll, setClassScroll] = useState('no-scroll')
+  const [scrollContentHeight, setScrollContentHeight] = useState(0)
+
+  useEffect(() => {
+    if (rendered) {
+      const { scrollHeight, offsetHeight } = containerRef.current
+      if (scrollHeight > offsetHeight) {
+        setClassScroll('scroll')
+        setScrollContentHeight(scrollHeight)
+      }
+    }
+  }, [rendered])
+
+  useEffect(() => {
+    if (slide.image) {
+      setRendered(imageLoaded)
+    } else {
+      setRendered(true)
+    }
+  }, [slide, imageLoaded])
 
   useEffect(() => {
     if (slide.video || (slide.image && imageLoaded)) {
@@ -98,13 +120,25 @@ function Slide(props) {
   }
 
   return (
-    <SlideMain current={current}>
-      <SlideContainer ref={containerRef} current={current}>
+    <SlideMain
+      current={current}
+      ref={mainRef}
+      className={classScroll}
+    >
+      <SlideContainer
+        ref={containerRef}
+        current={current}
+        className={classScroll}
+        scrollHeight={scrollContentHeight}
+      >
         <Header />
-        <SlideContent ref={contentRef} current={current} height={height}>
+        <SlideContent
+          ref={contentRef}
+          current={current}
+          height={height}
+        >
           {renderMedia()}
         </SlideContent>
-
         {slide.text ? renderText() : null}
 
         <Footer />
