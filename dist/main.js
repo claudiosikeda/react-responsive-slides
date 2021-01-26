@@ -2999,7 +2999,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n  padding: 20px 0;\n  max-width: ", ";\n  animation: fadeText .4s forwards;\n\n  @keyframes fadeText {\n    from {\n      opacity: 0;\n    }\n\n    to {\n      opacity: 1;\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding-top: 5px;\n  max-width: ", ";\n  margin: 0 auto;\n  animation: fadeText .4s forwards;\n\n  @keyframes fadeText {\n    from {\n      opacity: 0;\n    }\n\n    to {\n      opacity: 1;\n    }\n  }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -3009,7 +3009,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  height: ", ";\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  opacity: ", ";\n  transition: opacity .1s ease-in-out;\n"]);
+  var data = _taggedTemplateLiteral(["\n  background-color: #fff;\n  max-width: 800px;\n  margin: 0 auto;\n  height: ", ";\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  opacity: ", ";\n  transition: opacity .1s ease-in-out;\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -3019,7 +3019,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  background-color: #fff;\n  border-radius: 5px;\n  max-width: 80%;\n  max-height: 80%;\n  min-width: 280px;\n  min-height: 200px;\n  padding: 20px 30px;\n  z-index: 100;\n  position: relative;\n  overflow: auto;\n  transform: ", ";\n  transition: transform .2s ease-in-out;\n"]);
+  var data = _taggedTemplateLiteral(["\n  background-color: #fff;\n  border-radius: 5px;\n  max-width: 70%;\n  min-width: 280px;\n  min-height: 200px;\n  padding: 20px;\n  z-index: 100;\n  position: relative;\n  transform: ", ";\n  transition: transform .2s ease-in-out;\n\n  &.no-scroll {\n    max-height: 80%;\n  }\n\n  &.scroll {\n    margin: 40px auto;\n    height: ", ";\n  }\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -3029,7 +3029,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  position: absolute;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n  opacity: ", ";\n  transition: all .2s ease-in-out;\n"]);
+  var data = _taggedTemplateLiteral(["\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  opacity: ", ";\n  transition: all .2s ease-in-out;\n  overflow: auto;\n\n  &.no-scroll {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  &.scroll {\n    display: block;\n  }\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -3077,6 +3077,8 @@ var SlideMain = newStyled.div(_templateObject4(), function (props) {
 });
 var SlideContainer = newStyled.div(_templateObject5(), function (props) {
   return props.current ? 'scale(1)' : 'scale(.4)';
+}, function (props) {
+  return "".concat(props.scrollContentHeight, "px");
 });
 var SlideContent = newStyled.div(_templateObject6(), function (props) {
   return props.height;
@@ -3104,6 +3106,7 @@ function Slide(props) {
       Header = props.header,
       Footer = props.footer,
       onImageClick = props.onImageClick;
+  var mainRef = React.useRef();
   var contentRef = React.useRef();
   var containerRef = React.useRef();
   var mediaRef = React.useRef();
@@ -3123,6 +3126,40 @@ function Slide(props) {
       textWidth = _useState6[0],
       setTextWidth = _useState6[1];
 
+  var _useState7 = React.useState(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      rendered = _useState8[0],
+      setRendered = _useState8[1];
+
+  var _useState9 = React.useState('no-scroll'),
+      _useState10 = _slicedToArray(_useState9, 2),
+      classScroll = _useState10[0],
+      setClassScroll = _useState10[1];
+
+  var _useState11 = React.useState(0),
+      _useState12 = _slicedToArray(_useState11, 2),
+      scrollContentHeight = _useState12[0],
+      setScrollContentHeight = _useState12[1];
+
+  React.useEffect(function () {
+    if (rendered) {
+      var _containerRef$current = containerRef.current,
+          scrollHeight = _containerRef$current.scrollHeight,
+          offsetHeight = _containerRef$current.offsetHeight;
+
+      if (scrollHeight > offsetHeight) {
+        setClassScroll('scroll');
+        setScrollContentHeight(scrollHeight);
+      }
+    }
+  }, [rendered]);
+  React.useEffect(function () {
+    if (slide.image) {
+      setRendered(imageLoaded);
+    } else {
+      setRendered(true);
+    }
+  }, [slide, imageLoaded]);
   React.useEffect(function () {
     if (slide.video || slide.image && imageLoaded) {
       setTextWidth(mediaRef.current.offsetWidth);
@@ -3144,9 +3181,9 @@ function Slide(props) {
       return setHeight('auto');
     }
 
-    var _containerRef$current = containerRef.current,
-        scrollHeight = _containerRef$current.scrollHeight,
-        offsetHeight = _containerRef$current.offsetHeight;
+    var _containerRef$current2 = containerRef.current,
+        scrollHeight = _containerRef$current2.scrollHeight,
+        offsetHeight = _containerRef$current2.offsetHeight;
 
     if (scrollHeight !== offsetHeight) {
       var overflow = scrollHeight - offsetHeight + 5;
@@ -3202,10 +3239,14 @@ function Slide(props) {
   };
 
   return /*#__PURE__*/React__default['default'].createElement(SlideMain, {
-    current: current
+    current: current,
+    ref: mainRef,
+    className: classScroll
   }, /*#__PURE__*/React__default['default'].createElement(SlideContainer, {
     ref: containerRef,
-    current: current
+    current: current,
+    className: classScroll,
+    scrollHeight: scrollContentHeight
   }, /*#__PURE__*/React__default['default'].createElement(Header, null), /*#__PURE__*/React__default['default'].createElement(SlideContent, {
     ref: contentRef,
     current: current,
