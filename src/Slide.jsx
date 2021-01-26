@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import ImagePlaceholder from './ImagePlaceholder'
 import {
   SlideMain,
   SlideContainer,
@@ -30,15 +31,19 @@ function Slide(props) {
   const [classScroll, setClassScroll] = useState('no-scroll')
   const [scrollContentHeight, setScrollContentHeight] = useState(0)
 
+  const calculateScroll = useCallback(() => {
+    const { scrollHeight, offsetHeight } = containerRef.current
+    if (scrollHeight > offsetHeight) {
+      setClassScroll('scroll')
+      setScrollContentHeight(scrollHeight)
+    }
+  }, [])
+
   useEffect(() => {
     if (rendered) {
-      const { scrollHeight, offsetHeight } = containerRef.current
-      if (scrollHeight > offsetHeight) {
-        setClassScroll('scroll')
-        setScrollContentHeight(scrollHeight)
-      }
+      calculateScroll()
     }
-  }, [rendered])
+  }, [rendered, calculateScroll])
 
   useEffect(() => {
     if (slide.image) {
@@ -55,12 +60,13 @@ function Slide(props) {
     }
 
     if (slide.image) {
+      calculateScroll()
       return setTextWidth(800)
     }
 
     setTextWidth(800)
     return onRendered(index)
-  }, [slide, contentRef, onRendered, imageLoaded, index])
+  }, [slide, contentRef, onRendered, imageLoaded, index, calculateScroll])
 
   const loadedImage = () => {
     setImageLoaded(true)
@@ -83,15 +89,18 @@ function Slide(props) {
   }
 
   const renderImage = () => (
-    <SlideImage
-      ref={mediaRef}
-      src={slide.image}
-      style={{ maxWidth: '100%', maxHeight: '100%' }}
-      onLoad={loadedImage}
-      loaded={imageLoaded}
-      alt={slide.imageAlt || slide.image}
-      onClick={() => onImageClick(slide.image)}
-    />
+    <>
+      { imageLoaded ? null : <ImagePlaceholder /> }
+      <SlideImage
+        ref={mediaRef}
+        src={slide.image}
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
+        onLoad={loadedImage}
+        loaded={imageLoaded}
+        alt={slide.imageAlt || slide.image}
+        onClick={() => onImageClick(slide.image)}
+      />
+    </>
   )
 
   const renderVideo = () => (

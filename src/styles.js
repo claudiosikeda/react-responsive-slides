@@ -100,6 +100,7 @@ export const SlideImage = styled.img`
   max-width: 100%;
   max-height: 100%;
   animation: fadeImage .8s forwards;
+  display: ${(props) => (props.loaded ? 'block' : 'none')};
 
   @keyframes fadeImage {
     from {
@@ -134,4 +135,49 @@ export const LoaderContent = styled.div`
   transform: ${(props) => (props.show ? 'scale(1)' : 'scale(1.8)')};
   opacity: ${(props) => (props.show ? '1' : '0')};
   transition: all .1s ease-in-out;
+`
+
+export const ImagePlaceholderContainer = styled.div`
+  display: block;
+  background-color: rgb(230, 230, 230);
+  height: 200px;
+  width: 280px;
+  position: relative;
+  overflow: hidden;
+
+  div {
+    border: solid 3px #fff;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(230, 230, 230);
+    position: fixed;
+    margin: 85px 115px;
+  }
+
+  div:first-of-type {
+    margin: 75px 125px;
+    z-index: 1;
+  }
+  
+  &:before {
+    animation: load 1.5s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
+    content: '';
+    background: linear-gradient(to right, transparent 0%, #f1f1f1 50%, transparent 100%);
+    display: block;
+    height: 100%;
+    left: -150px;
+    position: absolute;
+    top: 0;
+    width: 150px;
+  }
+
+  @keyframes load {
+    from {
+      left: -150px;
+    }
+      
+    to {
+      left: 100%;
+    }
+  }
 `
