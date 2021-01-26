@@ -28,6 +28,12 @@ function Viewer(props) {
   const containerRef = useRef()
 
   useEffect(() => {
+    setTimeout(() => {
+      setRendered(true)
+    }, 2000)
+  }, [])
+
+  useEffect(() => {
     setCache(createCache({
       key: 'slide',
       container: containerRef.current,
