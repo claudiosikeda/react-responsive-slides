@@ -39,6 +39,25 @@ function Slide(props) {
     }
   }, [])
 
+  const calculateMediaHeight = useCallback(() => {
+    if (window.innerWidth < 500) {
+      return setHeight('auto')
+    }
+
+    const { scrollHeight, offsetHeight } = containerRef.current
+
+    if (scrollHeight !== offsetHeight) {
+      const overflow = scrollHeight - offsetHeight + 5
+      const contentHeight = contentRef.current.offsetHeight
+      let newHeight = contentHeight - overflow
+      newHeight = newHeight < 300 ? 'auto' : newHeight
+
+      return setHeight(`${newHeight}px`)
+    }
+
+    return null
+  }, [])
+
   useEffect(() => {
     if (rendered) {
       calculateScroll()
@@ -68,24 +87,12 @@ function Slide(props) {
     return onRendered(index)
   }, [slide, contentRef, onRendered, imageLoaded, index, calculateScroll])
 
+  useEffect(() => {
+    if (imageLoaded) calculateMediaHeight()
+  }, [imageLoaded, calculateMediaHeight])
+
   const loadedImage = () => {
     setImageLoaded(true)
-    if (window.innerWidth < 500) {
-      return setHeight('auto')
-    }
-
-    const { scrollHeight, offsetHeight } = containerRef.current
-
-    if (scrollHeight !== offsetHeight) {
-      const overflow = scrollHeight - offsetHeight + 5
-      const contentHeight = contentRef.current.offsetHeight
-      let newHeight = contentHeight - overflow
-      newHeight = newHeight < 300 ? 'auto' : newHeight
-
-      return setHeight(`${newHeight}px`)
-    }
-
-    return null
   }
 
   const renderImage = () => (

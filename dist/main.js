@@ -3168,6 +3168,25 @@ function Slide(props) {
       setScrollContentHeight(scrollHeight);
     }
   }, []);
+  var calculateMediaHeight = React.useCallback(function () {
+    if (window.innerWidth < 500) {
+      return setHeight('auto');
+    }
+
+    var _containerRef$current2 = containerRef.current,
+        scrollHeight = _containerRef$current2.scrollHeight,
+        offsetHeight = _containerRef$current2.offsetHeight;
+
+    if (scrollHeight !== offsetHeight) {
+      var overflow = scrollHeight - offsetHeight + 5;
+      var contentHeight = contentRef.current.offsetHeight;
+      var newHeight = contentHeight - overflow;
+      newHeight = newHeight < 300 ? 'auto' : newHeight;
+      return setHeight("".concat(newHeight, "px"));
+    }
+
+    return null;
+  }, []);
   React.useEffect(function () {
     if (rendered) {
       calculateScroll();
@@ -3194,27 +3213,12 @@ function Slide(props) {
     setTextWidth(800);
     return onRendered(index);
   }, [slide, contentRef, onRendered, imageLoaded, index, calculateScroll]);
+  React.useEffect(function () {
+    if (imageLoaded) calculateMediaHeight();
+  }, [imageLoaded, calculateMediaHeight]);
 
   var loadedImage = function loadedImage() {
     setImageLoaded(true);
-
-    if (window.innerWidth < 500) {
-      return setHeight('auto');
-    }
-
-    var _containerRef$current2 = containerRef.current,
-        scrollHeight = _containerRef$current2.scrollHeight,
-        offsetHeight = _containerRef$current2.offsetHeight;
-
-    if (scrollHeight !== offsetHeight) {
-      var overflow = scrollHeight - offsetHeight + 5;
-      var contentHeight = contentRef.current.offsetHeight;
-      var newHeight = contentHeight - overflow;
-      newHeight = newHeight < 300 ? 'auto' : newHeight;
-      return setHeight("".concat(newHeight, "px"));
-    }
-
-    return null;
   };
 
   var renderImage = function renderImage() {

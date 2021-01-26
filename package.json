@@ -1,6 +1,6 @@
 {
   "name": "react-responsive-slides",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Simple Responsive Slides",
   "main": "dist/main.js",
   "scripts": {
